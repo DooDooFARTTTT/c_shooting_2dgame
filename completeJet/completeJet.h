@@ -2,6 +2,8 @@
 #include "jet.h"
 #include "bullet/bullet.h"
 
+#define START_DIRECTION 90
+
 typedef struct{
     Jet *j;
     Proiettile *proiettili_in_campo[100];
@@ -15,3 +17,5 @@ typedef struct{
     int resistenza_tot;
     int resistenza_attuale;
 } CompleteJet;
+
+void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offset_y);

@@ -1,4 +1,11 @@
 #include "raylib.h"
+#include "player/player.h"
+#include "bullet/bullet.h"
+#include "completeJet/completeJet.h"
+#include "completeJet/jet.h"
+#include "geometry/triangle.h"
+#include "jetParts/jetParts.h"
+
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -8,7 +15,6 @@
 #define FRONT 1
 #define BACKWARD -1
 #define OUT_OF_SCREEN 67
-#define START_DIRECTION 90
 #define PLAYER 0
 #define RESET_INCOHERENCE 104
 
@@ -16,129 +22,7 @@ const int FPS = 60;
 const int screenWidth = 900;
 const int screenHeight = 562;
 
-typedef struct{
-    float direction_degree;
-    Vector2 position;
-    Vector2 speed;
-    char *owner;
-    char size;
-} Proiettile;
 
-typedef struct{
-    Vector2 vertice_assoluto;
-    Vector2 base_sx_assoluto;
-    Vector2 base_dx_assoluto;
-
-    Vector2 vertice_relativo;
-    Vector2 base_sx_relativo;
-    Vector2 base_dx_relativo;
-} Triangolo;
-
-typedef struct {
-    float peso;
-    float costo;
-    float resistenza;
-    float turn_capability;
-    float perfect_turn_speed;
-} Wings;
-
-typedef struct{
-    float peso;
-    float costo;
-    float resistenza;
-    float potenza;
-} Engine;
-
-typedef struct{
-    float peso;
-    float costo;
-    float resistenza;
-    float aereodinamicita;
-    float aereofreno;
-} Airframe;
-
-typedef struct{
-    float peso;
-    float costo;
-    float damage_per_bullet;
-    float munizioni;
-    float firerate;
-    float ricarica_rimasta;
-} Gun;
-
-typedef struct{
-    char name[32];
-    Engine *engine;
-    Airframe *airframe;
-    Gun *gun;
-    Wings *wings;
-} Jet;
-
-typedef struct{
-    Jet *j;
-    Proiettile *proiettili_in_campo[100];
-    Vector2 speed;
-    Vector2 position;
-    float accellerazione_per_frame;
-    float stall_speed;
-    float peso;
-    float direzione_degree;
-    int numero_proiettili_in_campo;
-    int resistenza_tot;
-    int resistenza_attuale;
-} CompleteJet;
-
-//Dato un CompleteJet, assegnera i componenti a jet, un nome, e tutti i dati che ne cnseguono a CompleteJet
-void builCompleteJet(char *name,CompleteJet *c_jet, Engine *e, Airframe *a, Gun *g, Wings *w){
-    //COMPONENTI DEL JET
-    strcpy(c_jet->j->name, name);
-    c_jet->j->engine = e;
-    c_jet->j->airframe = a;
-    c_jet->j->gun = g;
-    c_jet->j->wings = w;
-    
-    
-    c_jet->j->gun->ricarica_rimasta = 0;
-
-    float peso = c_jet->j->engine->peso + c_jet->j->airframe->peso + c_jet->j->gun->peso + c_jet->j->wings->peso;
-
-    //DATI DEL JET
-    c_jet->peso = peso;
-    c_jet->direzione_degree = START_DIRECTION;
-    c_jet->speed.x = 0;
-    c_jet->speed.y = 0;
-    c_jet->position.x = screenWidth / 2;
-    c_jet->position.y = screenHeight / 2;
-    c_jet->accellerazione_per_frame =  8.0f * (c_jet->j->engine->potenza / c_jet->peso);
-    c_jet->stall_speed = c_jet->peso / 15;
-    c_jet->numero_proiettili_in_campo = 0;
-    c_jet->resistenza_tot = c_jet->j->engine->resistenza + c_jet->j->airframe->resistenza + c_jet->j->wings->resistenza;
-    c_jet->resistenza_attuale = c_jet->resistenza_tot;
-}
-
-void builCompleteJetNemico(char *name, CompleteJet *c_jet, Engine *e, Airframe *a, Gun *g, Wings *w, int offset_x, int offset_y){
-    //COMPONENTI DEL JET
-    strcpy(c_jet->j->name, name);
-    c_jet->j->engine = e;
-    c_jet->j->airframe = a;
-    c_jet->j->gun = g;
-    c_jet->j->wings = w;
-
-    float peso = c_jet->j->engine->peso + c_jet->j->airframe->peso + c_jet->j->gun->peso + c_jet->j->wings->peso;
-
-    //DATI DEL JET
-    c_jet->peso = peso;
-    c_jet->direzione_degree = START_DIRECTION;
-    c_jet->speed.x = 0;
-    c_jet->speed.y = 0;
-    c_jet->position.x = screenWidth / 2 - offset_x;
-    c_jet->position.y = screenHeight / 2 - offset_y;
-    c_jet->accellerazione_per_frame =  8.0f * (c_jet->j->engine->potenza / c_jet->peso);
-    c_jet->stall_speed = c_jet->peso / 15;
-    c_jet->numero_proiettili_in_campo = 0;
-    c_jet->resistenza_tot = c_jet->j->engine->resistenza + c_jet->j->airframe->resistenza + c_jet->j->wings->resistenza;
-    c_jet->resistenza_attuale = c_jet->resistenza_tot;
-}
 
 /*
 CompleteJet *builCompleteJetPtr(char *name, Triangolo *t, Engine *e, Airframe *a, Gun *g, Wings *w, int offset_x, int offset_y){

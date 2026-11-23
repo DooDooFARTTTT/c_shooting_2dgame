@@ -8,3 +8,7 @@ typedef struct{
     Gun *gun;
     Wings *wings;
 } Jet;
+
+
+
+void buildJet(Jet* jet, char *name, Engine *e, Airframe *a, Gun *g, Wings *w);
