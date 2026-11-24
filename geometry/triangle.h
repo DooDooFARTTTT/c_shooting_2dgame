@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "completeJet/completeJet.h"
 
 typedef struct{
     Vector2 vertice_assoluto;
@@ -13,3 +14,4 @@ typedef struct{
 void inizializzaTriangle(CompleteJet *c_jet, Triangolo *t, int size);
 void disegnaTriangolo(Triangolo *t);
 void disegnaProiettile(CompleteJet *c_jet);
+void rotate_triangolo(CompleteJet *c_jet, Triangolo *t);

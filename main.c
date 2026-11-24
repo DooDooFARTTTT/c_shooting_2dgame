@@ -107,7 +107,6 @@ static inline double conversioneInRadianti(double degree){
 }
 
 
-
 char checkIfIsOutOfScreen(Vector2 position){
     if(position.x < 0 || position.x > screenWidth || position.y < 0 || position.y > screenHeight)
         return OUT_OF_SCREEN;
@@ -119,36 +118,6 @@ float calcolaResistenza(float speed, float aereodinamicita){
     return speed * fabs(speed) * (aereodinamicita / 1000.0f);
 }
 
-//Dati 2 vettori, passati con CompletedJet, aereoFreno al aereofreno del jet, applica una resistenza aereodinamica verso la direnzione di viaggio
-void rallenta(CompleteJet *c_jet){
-    c_jet->speed.x -= calcolaResistenza(c_jet->speed.x, c_jet->j->airframe->aereodinamicita) / (c_jet->j->airframe->aereofreno / 2);
-    c_jet->speed.y -= calcolaResistenza(c_jet->speed.y, c_jet->j->airframe->aereodinamicita) / (c_jet->j->airframe->aereofreno / 2);
-}
-
-//dato UN VETTORE, l'accellerazione per frame, l'aereodinamica e la velocita, calcolo quanto è l'accellerazione per ogni frame
-float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa){
-    float resistenza = calcolaResistenza(speed, aereodinamicita);
-    if(stampa == 0)
-        DrawText(TextFormat("X: %.4f",resistenza), 20, 130, 30, WHITE);
-    else
-        DrawText(TextFormat("Y: %.4f",resistenza), 20, 160, 30, WHITE);
-
-    if(resistenza > 0)
-        return accellerazione_per_frame - resistenza;
-    return accellerazione_per_frame + resistenza;
-}
-
-//dati i due vettori per riferimento, e la direzione del jet, determina l'accellerazione per i due vettori
-//e li moltiplica per il cos "x" e il sin "y" basato sulla conversione in radianti della direzione degree.
-//il tutto diviso per il numero di FPS
-void accellera(CompleteJet *c_jet){
-    float tot_speed = sqrt((c_jet->speed.x * c_jet->speed.x) + (c_jet->speed.y * c_jet->speed.y));
-
-    float accellerazione = calculate_accelleration(c_jet->accellerazione_per_frame, c_jet->j->airframe->aereodinamicita, tot_speed, 0);
-
-    c_jet->speed.x -= accellerazione * cos((conversioneInRadianti(c_jet->direzione_degree))) / FPS;
-    c_jet->speed.y -= accellerazione * sin((conversioneInRadianti(c_jet->direzione_degree))) / FPS;
-}
 
 void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
     float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->direzione_degree)));
@@ -156,63 +125,6 @@ void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
     c_jet->speed.x = x_speed;
     c_jet->speed.y = y_speed;
 }
-
-void rotate_triangolo(CompleteJet *c_jet, Triangolo *t){
-    Vector2 center = {c_jet->position.x, c_jet->position.y};
-    float coseno = cos(conversioneInRadianti(c_jet->direzione_degree - 90));
-    float seno = sin(conversioneInRadianti(c_jet->direzione_degree - 90));
-
-    Vector2 vertice = t->vertice_assoluto;
-    Vector2 base_sx = t->base_sx_assoluto;
-    Vector2 base_dx = t->base_dx_assoluto;
-
-    Vector2 vertice2;
-    Vector2 base_sx2;
-    Vector2 base_dx2;
-
-    vertice.x -= center.x;
-    vertice.y -= center.y;
-
-    base_sx.x -= center.x;
-    base_sx.y -= center.y;
-
-    base_dx.x -= center.x;
-    base_dx.y -= center.y;
-
-    vertice2.x = vertice.x;
-    vertice2.y = vertice.y;
-
-    base_sx2.x = base_sx.x;
-    base_sx2.y = base_sx.y;
-
-    base_dx2.x = base_dx.x;
-    base_dx2.y = base_dx.y;
-
-
-    vertice.x = vertice2.x * coseno - vertice2.y * seno;
-    vertice.y = vertice2.x * seno + vertice2.y * coseno;
-
-    base_sx.x = base_sx2.x * coseno - base_sx2.y * seno;
-    base_sx.y = base_sx2.x * seno + base_sx2.y * coseno;
-
-    base_dx.x = base_dx2.x * coseno - base_dx2.y * seno;
-    base_dx.y = base_dx2.x * seno + base_dx2.y * coseno;
-
-
-    vertice.x  = vertice.x  + center.x;
-    vertice.y  = vertice.y  + center.y;
-
-    base_sx.x  = base_sx.x  + center.x;
-    base_sx.y  = base_sx.y  + center.y;
-
-    base_dx.x  = base_dx.x  + center.x;
-    base_dx.y  = base_dx.y  + center.y;
-
-    t->vertice_relativo = vertice;
-    t->base_sx_relativo = base_sx;
-    t->base_dx_relativo = base_dx;
-}
-
 
 
 void resetta_gioco(CompleteJet *c_jet, Triangolo *t){

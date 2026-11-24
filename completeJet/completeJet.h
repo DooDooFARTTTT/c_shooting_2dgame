@@ -1,6 +1,7 @@
 #include "raylib.h"
 #include "jet.h"
 #include "bullet/bullet.h"
+#include "geometry/triangle.h"
 
 #define START_DIRECTION 90
 
@@ -22,3 +23,10 @@ void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offse
 void sparaProiettile(CompleteJet *c_jet);
 void virare(CompleteJet *c_jet, Triangolo *t, int verso);
 void ricarica(CompleteJet *c_jet);
+void accellera(CompleteJet *c_jet);
+//Dati 2 vettori, passati con CompletedJet, aereoFreno al aereofreno del jet, applica una resistenza aereodinamica verso la direnzione di viaggio
+void rallenta(CompleteJet *c_jet);
+
+//dato UN VETTORE, l'accellerazione per frame, l'aereodinamica e la velocita, calcolo quanto è l'accellerazione per ogni frame
+float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa);
+void drawTotSpeed(CompleteJet *c_jet);
