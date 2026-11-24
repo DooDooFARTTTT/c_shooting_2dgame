@@ -79,26 +79,8 @@ void builCompleteJetNemicoPtr(char *name, CompleteJet *c_jet, Engine *e, Airfram
 }
 */
 
-void inizializzaTriangle(CompleteJet *c_jet, Triangolo *t, int size){
-    t->vertice_assoluto.x = c_jet->position.x;
-    t->vertice_assoluto.y = c_jet->position.y - size;
 
-    t->base_sx_assoluto.x = c_jet->position.x - size;
-    t->base_sx_assoluto.y = c_jet->position.y + size;
-
-    t->base_dx_assoluto.x = c_jet->position.x + size;
-    t->base_dx_assoluto.y = c_jet->position.y + size;
-
-    t->vertice_relativo.x = t->vertice_assoluto.x;
-    t->vertice_relativo.y = t->vertice_assoluto.y;
-
-    t->base_sx_relativo.x = t->base_sx_assoluto.x;
-    t->base_sx_relativo.y = t->base_sx_assoluto.y;
-
-    t->base_dx_relativo.x = t->base_dx_assoluto.x;
-    t->base_dx_relativo.y = t->base_dx_assoluto.y;
-}
-
+/*
 void inizializzaTriangleNemico(CompleteJet *c_jet, Triangolo *t, int size, float offset_x, float offset_y){
     t->vertice_assoluto.x = c_jet->position.x - offset_x;
     t->vertice_assoluto.y = c_jet->position.y - size - offset_y;
@@ -117,29 +99,14 @@ void inizializzaTriangleNemico(CompleteJet *c_jet, Triangolo *t, int size, float
 
     t->base_dx_relativo.x = t->base_dx_assoluto.x;
     t->base_dx_relativo.y = t->base_dx_assoluto.y;
-}
+}*/
 
 //mi sembra ovvio
 static inline double conversioneInRadianti(double degree){
     return (degree * PI) / 180;
 }
 
-void inizializzaProiettile(CompleteJet *c_jet, Proiettile *p){
-    p->direction_degree = c_jet->direzione_degree;
-    p->position.x = c_jet->position.x;
-    p->position.y = c_jet->position.y;
-    float tot_speed = sqrt(c_jet->speed.x * c_jet->speed.x + c_jet->speed.y * c_jet->speed.y);
 
-    tot_speed += 70;
-
-    p->speed.x = tot_speed * -cos(conversioneInRadianti(c_jet->direzione_degree));
-    p->speed.y = tot_speed * -sin(conversioneInRadianti(c_jet->direzione_degree));
-    p->size = 5;
-    p->owner = c_jet->j->name;
-    c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo] = p;
-    c_jet->numero_proiettili_in_campo++;
-    DrawText(TextFormat("spd: %.1f",tot_speed), 20, 260, 30, MAGENTA);
-}
 
 char checkIfIsOutOfScreen(Vector2 position){
     if(position.x < 0 || position.x > screenWidth || position.y < 0 || position.y > screenHeight)
@@ -246,34 +213,7 @@ void rotate_triangolo(CompleteJet *c_jet, Triangolo *t){
     t->base_dx_relativo = base_dx;
 }
 
-void virare(CompleteJet *c_jet, Triangolo *t, int verso){
-    float x_speed = c_jet->speed.x;
-    float y_speed = c_jet->speed.y;
-    float tot_speed = sqrt((x_speed * x_speed) + (y_speed * y_speed));
 
-    if(tot_speed <= c_jet->stall_speed)
-        return;
-
-
-
-    float ratio = (c_jet->j->wings->perfect_turn_speed * 100) / tot_speed;
-    ratio = fabs((ratio - 100) / 100) + 1;
-
-
-
-    float degree_rotated = (c_jet->j->wings->turn_capability / ratio) / 15;
-
-    if(verso == 1)
-        c_jet->direzione_degree += degree_rotated;
-    else
-        c_jet->direzione_degree -= degree_rotated;
-    ricalcolo_gognometrico_velocita(c_jet, tot_speed);
-    c_jet->speed.x *= 1 - degree_rotated / (FPS * 1);
-    c_jet->speed.y *= 1 - degree_rotated / (FPS * 1);
-    rotate_triangolo(c_jet, t);
-
-    DrawText(TextFormat("Turn capacity: %.4f",degree_rotated), 20, 220, 30, PURPLE);
-}
 
 void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
     c_jet->direzione_degree = START_DIRECTION;
@@ -329,43 +269,6 @@ void aggiornaPosizione(CompleteJet *c_jet, Triangolo *t){
     t->base_dx_relativo.y += c_jet->speed.y / FPS;
 }
 
-//CODICE RISCHIOSO
-void sparaProiettile(CompleteJet *c_jet){
-    if(c_jet->j->gun->ricarica_rimasta > 0)
-        return; 
-    
-    if(c_jet->numero_proiettili_in_campo >= sizeof(c_jet->proiettili_in_campo) / sizeof(Proiettile*)){
-        free(c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo - 1]);
-        c_jet->numero_proiettili_in_campo--;    //da fixare per eliminare il proiettile più vecchio
-    }
-
-    Proiettile *p = malloc(sizeof(Proiettile));
-    if (p == NULL) {
-        printf("Errore: Memoria Proiettile\n");
-        return;
-    }
-
-    inizializzaProiettile(c_jet, p);
-    c_jet->j->gun->ricarica_rimasta = c_jet->j->gun->firerate;
-}
-
-void disegnaProiettile(CompleteJet *c_jet){
-    for(int i = 0; i < c_jet->numero_proiettili_in_campo; i++){
-        if(checkIfIsOutOfScreen(c_jet->proiettili_in_campo[i]->position) == OUT_OF_SCREEN){
-            free(c_jet->proiettili_in_campo[i]);
-            c_jet->numero_proiettili_in_campo--;
-            c_jet->proiettili_in_campo[i] = c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo];
-        }
-        c_jet->proiettili_in_campo[i]->position.x += c_jet->proiettili_in_campo[i]->speed.x / FPS;
-        c_jet->proiettili_in_campo[i]->position.y += c_jet->proiettili_in_campo[i]->speed.y / FPS;
-        DrawCircle(c_jet->proiettili_in_campo[i]->position.x, c_jet->proiettili_in_campo[i]->position.y, c_jet->proiettili_in_campo[i]->size, RED);
-    }
-}
-
-void disegnaTriangolo(Triangolo *t){
-    DrawTriangle(t->vertice_relativo, t->base_sx_relativo, t->base_dx_relativo, BLUE);
-}
-
 void drawTotSpeed(CompleteJet *c_jet){
     float tot_speed = sqrt((c_jet->speed.x * c_jet->speed.x) + (c_jet->speed.y * c_jet->speed.y));
 
@@ -383,29 +286,7 @@ void drawTotSpeed(CompleteJet *c_jet){
         DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, BLUE);
 }
 
-void checkCollisionBullets(CompleteJet *c_jet1, CompleteJet *c_jet2){
-    for(int i = 0; i < c_jet2->numero_proiettili_in_campo; i++){  //c_jet2 attacca c_jet1
-        if(CheckCollisionCircles(c_jet1->position, 10, c_jet2->proiettili_in_campo[i]->position, 5)){
-            c_jet1->resistenza_attuale -= c_jet2->j->gun->damage_per_bullet;
-            free(c_jet2->proiettili_in_campo[i]);
-            c_jet2->numero_proiettili_in_campo--;
-            c_jet2->proiettili_in_campo[i] = c_jet2->proiettili_in_campo[c_jet2->numero_proiettili_in_campo];
-            i--;
-        }
-    }
-    for(int i = 0; i < c_jet1->numero_proiettili_in_campo; i++){  //c_jet1 attacca c_jet2
-        if(CheckCollisionCircles(c_jet2->position, 10, c_jet1->proiettili_in_campo[i]->position, 5)){
-            c_jet2->resistenza_attuale -= c_jet1->j->gun->damage_per_bullet;
-            free(c_jet1->proiettili_in_campo[i]);
-            c_jet1->numero_proiettili_in_campo--;
-            c_jet1->proiettili_in_campo[i] = c_jet1->proiettili_in_campo[c_jet1->numero_proiettili_in_campo];
-            i--;
 
-            DrawCircle(c_jet2->position.x, c_jet2->position.y, 10, RED);
-        }
-    }
-
-}
 
 char checkInVita(CompleteJet *c_jet){
     if(c_jet->resistenza_attuale <= 0)
@@ -414,19 +295,14 @@ char checkInVita(CompleteJet *c_jet){
     return 0;
 }
 
-void ricarica(CompleteJet *c_jet){
-    if(c_jet->j->gun->ricarica_rimasta > 0)
-        c_jet->j->gun->ricarica_rimasta -= 1000 / FPS;
-    
-    DrawText(TextFormat("ricarica: %.2f",c_jet->j->gun->ricarica_rimasta), 20, 360, 30, GREEN);
-}
+
 
 /*
 DrawTriangle((Vector2) {screenWidth / 2, screenHeight/2 - 30 }, //VERTICE
 (Vector2){screenWidth / 2 - 15, screenHeight/2}, //BASE SINISTRA
 (Vector2){screenWidth / 2 + 15, screenHeight/2}, VIOLET); //BASE DESTRA
 */
-
+/*
 //stampa
 char per_colpire(CompleteJet *aereo_puntato, Proiettile *p){
     Vector2 predizione_posizione;
@@ -450,7 +326,7 @@ void spostati_se_bersagliato(CompleteJet *c_nemico_jet, Proiettile *p){
     if(per_colpire(c_nemico_jet, p) == 1){
         accellera(c_nemico_jet);
     }
-}
+}*/
 
 int main(){
     InitWindow(900, 560, "raylib [core] example - basic window");

@@ -19,3 +19,6 @@ typedef struct{
 } CompleteJet;
 
 void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offset_y);
+void sparaProiettile(CompleteJet *c_jet);
+void virare(CompleteJet *c_jet, Triangolo *t, int verso);
+void ricarica(CompleteJet *c_jet);

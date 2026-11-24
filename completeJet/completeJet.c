@@ -22,3 +22,60 @@ void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offse
     c_jet->resistenza_tot = c_jet->j->engine->resistenza + c_jet->j->airframe->resistenza + c_jet->j->wings->resistenza;
     c_jet->resistenza_attuale = c_jet->resistenza_tot;
 }
+
+//CODICE RISCHIOSO
+void sparaProiettile(CompleteJet *c_jet){
+    if(c_jet->j->gun->ricarica_rimasta > 0)
+        return; 
+    
+    if(c_jet->numero_proiettili_in_campo >= sizeof(c_jet->proiettili_in_campo) / sizeof(Proiettile*)){
+        free(c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo - 1]);
+        c_jet->numero_proiettili_in_campo--;    //da fixare per eliminare il proiettile più vecchio
+    }
+
+    Proiettile *p = malloc(sizeof(Proiettile));
+    if (p == NULL) {
+        printf("Errore: Memoria Proiettile\n");
+        return;
+    }
+
+    inizializzaProiettile(c_jet, p);
+    c_jet->j->gun->ricarica_rimasta = c_jet->j->gun->firerate;
+}
+
+
+void virare(CompleteJet *c_jet, Triangolo *t, int verso){
+    float x_speed = c_jet->speed.x;
+    float y_speed = c_jet->speed.y;
+    float tot_speed = sqrt((x_speed * x_speed) + (y_speed * y_speed));
+
+    if(tot_speed <= c_jet->stall_speed)
+        return;
+
+
+
+    float ratio = (c_jet->j->wings->perfect_turn_speed * 100) / tot_speed;
+    ratio = fabs((ratio - 100) / 100) + 1;
+
+
+
+    float degree_rotated = (c_jet->j->wings->turn_capability / ratio) / 15;
+
+    if(verso == 1)
+        c_jet->direzione_degree += degree_rotated;
+    else
+        c_jet->direzione_degree -= degree_rotated;
+    ricalcolo_gognometrico_velocita(c_jet, tot_speed);
+    c_jet->speed.x *= 1 - degree_rotated / (FPS * 1);
+    c_jet->speed.y *= 1 - degree_rotated / (FPS * 1);
+    rotate_triangolo(c_jet, t);
+
+    DrawText(TextFormat("Turn capacity: %.4f",degree_rotated), 20, 220, 30, PURPLE);
+}
+
+void ricarica(CompleteJet *c_jet){
+    if(c_jet->j->gun->ricarica_rimasta > 0)
+        c_jet->j->gun->ricarica_rimasta -= 1000 / FPS;
+    
+    DrawText(TextFormat("ricarica: %.2f",c_jet->j->gun->ricarica_rimasta), 20, 360, 30, GREEN);
+}

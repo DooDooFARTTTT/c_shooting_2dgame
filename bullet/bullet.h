@@ -8,3 +8,6 @@ typedef struct{
     char *owner;
     char size;
 } Proiettile;
+
+void inizializzaProiettile(CompleteJet *c_jet, Proiettile *p); 
+void disegnaProiettile(CompleteJet *c_jet);
