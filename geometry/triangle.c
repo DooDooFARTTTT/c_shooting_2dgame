@@ -2,23 +2,23 @@
 #include "completeJet/completeJet.h"
 
 void buildTriangle(Triangolo *t, Vector2 position, int size){
-    t->vertice_assoluto.x = position.x;
-    t->vertice_assoluto.y = position.y - size;
+    t->vertAbs.x = position.x;
+    t->vertAbs.y = position.y - size;
 
-    t->base_sx_assoluto.x = position.x - size;
-    t->base_sx_assoluto.y = position.y + size;
+    t->baseSxAbs.x = position.x - size;
+    t->baseSxAbs.y = position.y + size;
 
-    t->base_dx_assoluto.x = position.x + size;
-    t->base_dx_assoluto.y = position.y + size;
+    t->baseDxAbs.x = position.x + size;
+    t->baseDxAbs.y = position.y + size;
 
-    t->vertice_relativo.x = vertice_assoluto.x;
-    t->vertice_relativo.y = vertice_assoluto.y;
+    t->vertRel.x = vertAbs.x;
+    t->vertRel.y = vertAbs.y;
 
-    t->base_sx_relativo.x = base_sx_assoluto.x;
-    t->base_sx_relativo.y = base_sx_assoluto.y;
+    t->baseSxRel.x = baseSxRel.x;
+    t->baseSxRel.y = baseSxRel.y;
 
-    t->base_dx_relativo.x = base_dx_assoluto.x;
-    t->base_dx_relativo.y = base_dx_assoluto.y;
+    t->baseDxRel.x = baseDxRel.x;
+    t->baseDxRel.y = baseDxRel.y;
 }
 
 void disegnaTriangolo(Triangolo *t){
