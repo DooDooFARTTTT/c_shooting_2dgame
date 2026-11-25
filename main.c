@@ -142,6 +142,7 @@ void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
     c_jet->numero_proiettili_in_campo = 0;
 }
 
+/*
 void resetta_gioco_nemico(CompleteJet *c_jet, Triangolo *t, int offset_x, int offset_y){
     c_jet->direzione_degree = START_DIRECTION;
     c_jet->position.x = screenWidth / 2 - offset_x;
@@ -179,24 +180,7 @@ void aggiornaPosizione(CompleteJet *c_jet, Triangolo *t){
 
     t->base_dx_relativo.x += c_jet->speed.x / FPS;
     t->base_dx_relativo.y += c_jet->speed.y / FPS;
-}
-
-void drawTotSpeed(CompleteJet *c_jet){
-    float tot_speed = sqrt((c_jet->speed.x * c_jet->speed.x) + (c_jet->speed.y * c_jet->speed.y));
-
-    if(tot_speed <= c_jet->stall_speed)
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, MAROON);
-    else if(tot_speed <= c_jet->j->wings->perfect_turn_speed * 0.55)
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, RED);
-    else if(tot_speed <= c_jet->j->wings->perfect_turn_speed * 0.80)
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, ORANGE);
-    else if(tot_speed > c_jet->j->wings->perfect_turn_speed * 0.80 && tot_speed < c_jet->j->wings->perfect_turn_speed * 0.95 )
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, YELLOW);
-    else if(tot_speed >= c_jet->j->wings->perfect_turn_speed * 0.95 && tot_speed <= c_jet->j->wings->perfect_turn_speed * 1.05)
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, GREEN);
-    else if(tot_speed > c_jet->j->wings->perfect_turn_speed * 1.05)
-        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, BLUE);
-}
+}*/
 
 
 

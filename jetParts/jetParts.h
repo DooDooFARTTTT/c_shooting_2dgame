@@ -1,7 +1,4 @@
-
-
-
-typedef struct {
+typedef struct Wings{
     float peso;
     float costo;
     float resistenza;
@@ -9,14 +6,14 @@ typedef struct {
     float perfect_turn_speed;
 } Wings;
 
-typedef struct{
+typedef struct Engine{
     float peso;
     float costo;
     float resistenza;
     float potenza;
 } Engine;
 
-typedef struct{
+typedef struct Airframe{
     float peso;
     float costo;
     float resistenza;
@@ -24,7 +21,7 @@ typedef struct{
     float aereofreno;
 } Airframe;
 
-typedef struct{
+typedef struct Gun{
     float peso;
     float costo;
     float damage_per_bullet;

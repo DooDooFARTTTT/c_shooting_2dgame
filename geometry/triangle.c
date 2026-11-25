@@ -1,24 +1,24 @@
 #include "triangle.h"
 #include "completeJet/completeJet.h"
 
-void inizializzaTriangle(CompleteJet *c_jet, Triangolo *t, int size){
-    t->vertice_assoluto.x = c_jet->position.x;
-    t->vertice_assoluto.y = c_jet->position.y - size;
+void buildTriangle(Triangolo *t, Vector2 position, int size){
+    t->vertice_assoluto.x = position.x;
+    t->vertice_assoluto.y = position.y - size;
 
-    t->base_sx_assoluto.x = c_jet->position.x - size;
-    t->base_sx_assoluto.y = c_jet->position.y + size;
+    t->base_sx_assoluto.x = position.x - size;
+    t->base_sx_assoluto.y = position.y + size;
 
-    t->base_dx_assoluto.x = c_jet->position.x + size;
-    t->base_dx_assoluto.y = c_jet->position.y + size;
+    t->base_dx_assoluto.x = position.x + size;
+    t->base_dx_assoluto.y = position.y + size;
 
-    t->vertice_relativo.x = t->vertice_assoluto.x;
-    t->vertice_relativo.y = t->vertice_assoluto.y;
+    t->vertice_relativo.x = vertice_assoluto.x;
+    t->vertice_relativo.y = vertice_assoluto.y;
 
-    t->base_sx_relativo.x = t->base_sx_assoluto.x;
-    t->base_sx_relativo.y = t->base_sx_assoluto.y;
+    t->base_sx_relativo.x = base_sx_assoluto.x;
+    t->base_sx_relativo.y = base_sx_assoluto.y;
 
-    t->base_dx_relativo.x = t->base_dx_assoluto.x;
-    t->base_dx_relativo.y = t->base_dx_assoluto.y;
+    t->base_dx_relativo.x = base_dx_assoluto.x;
+    t->base_dx_relativo.y = base_dx_assoluto.y;
 }
 
 void disegnaTriangolo(Triangolo *t){

@@ -11,7 +11,7 @@ void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offse
 
     float peso = c_jet->j->engine->peso + c_jet->j->airframe->peso + c_jet->j->gun->peso + c_jet->j->wings->peso;
 
-    //DATI DEL JET
+    //DATI DI COMPLETED JET
     c_jet->peso = peso;
     c_jet->direzione_degree = START_DIRECTION;
     c_jet->speed.x = 0;
@@ -55,7 +55,6 @@ void virare(CompleteJet *c_jet, Triangolo *t, int verso){
         return;
 
 
-
     float ratio = (c_jet->j->wings->perfect_turn_speed * 100) / tot_speed;
     ratio = fabs((ratio - 100) / 100) + 1;
 
@@ -92,4 +91,40 @@ void accellera(CompleteJet *c_jet){
 
     c_jet->speed.x -= accellerazione * cos((conversioneInRadianti(c_jet->direzione_degree))) / FPS;
     c_jet->speed.y -= accellerazione * sin((conversioneInRadianti(c_jet->direzione_degree))) / FPS;
+}
+
+void rallenta(CompleteJet *c_jet){
+    c_jet->speed.x -= calcolaResistenza(c_jet->speed.x, c_jet->j->airframe->aereodinamicita) / (c_jet->j->airframe->aereofreno / 2);
+    c_jet->speed.y -= calcolaResistenza(c_jet->speed.y, c_jet->j->airframe->aereodinamicita) / (c_jet->j->airframe->aereofreno / 2);
+}
+
+
+//dato UN VETTORE, l'accellerazione per frame, l'aereodinamica e la velocita, calcolo quanto è l'accellerazione per ogni frame
+float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa){
+    float resistenza = calcolaResistenza(speed, aereodinamicita);
+    if(stampa == 0)
+        DrawText(TextFormat("X: %.4f",resistenza), 20, 130, 30, WHITE);
+    else
+        DrawText(TextFormat("Y: %.4f",resistenza), 20, 160, 30, WHITE);
+
+    if(resistenza > 0)
+        return accellerazione_per_frame - resistenza;
+    return accellerazione_per_frame + resistenza;
+}
+
+void drawTotSpeed(CompleteJet *c_jet){
+    float tot_speed = sqrt((c_jet->speed.x * c_jet->speed.x) + (c_jet->speed.y * c_jet->speed.y));
+
+    if(tot_speed <= c_jet->stall_speed)
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, MAROON);
+    else if(tot_speed <= c_jet->j->wings->perfect_turn_speed * 0.55)
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, RED);
+    else if(tot_speed <= c_jet->j->wings->perfect_turn_speed * 0.80)
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, ORANGE);
+    else if(tot_speed > c_jet->j->wings->perfect_turn_speed * 0.80 && tot_speed < c_jet->j->wings->perfect_turn_speed * 0.95 )
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, YELLOW);
+    else if(tot_speed >= c_jet->j->wings->perfect_turn_speed * 0.95 && tot_speed <= c_jet->j->wings->perfect_turn_speed * 1.05)
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, GREEN);
+    else if(tot_speed > c_jet->j->wings->perfect_turn_speed * 1.05)
+        DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, BLUE);
 }

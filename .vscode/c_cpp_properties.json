@@ -4,6 +4,7 @@
             "name": "Win32",
             "compilerPath": "C:\\raylib\\w64devkit\\bin\\gcc.exe",
             "includePath": [
+                "${workspaceFolder}",
                 "${workspaceFolder}\\**",
                 "C:\\raylib\\raylib\\src"
             ],

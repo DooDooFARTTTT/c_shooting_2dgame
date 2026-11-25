@@ -1,7 +1,7 @@
 #include "raylib.h"
 
 
-typedef struct{
+typedef struct Proiettile{
     float direction_degree;
     Vector2 position;
     Vector2 speed;
