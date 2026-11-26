@@ -9,6 +9,7 @@
 typedef struct Proiettile{
     float directionDegree;
     char size;
+    bool alive;
     Vector2 position;
     Vector2 speed;
 } Proiettile;

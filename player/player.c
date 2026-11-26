@@ -13,6 +13,3 @@ void buildPlayer(Player* player, char* name){
     strcpy(player->name, name);
 }
 
-void assignCompletedJet(Player* player, CompletedJet* completedJet){
-    
-}

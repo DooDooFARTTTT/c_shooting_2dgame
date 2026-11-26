@@ -7,6 +7,7 @@ void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector
 
     p->directionDegree = directionDegree;
     p->size = STANDARD_BULLET_SIZE;
+    p->alive = true;
     p->position.x = position.x;
     p->position.y = position.y;
     p->speed.x = totSpeed * -cos(conversioneInRadianti(directionDegree));

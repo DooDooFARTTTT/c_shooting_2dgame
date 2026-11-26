@@ -6,11 +6,8 @@
 #include "geometry/triangle.h"
 #include "jetParts/jetParts.h"
 
-#include <stdint.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <string.h>
 
 #define FRONT 1
 #define BACKWARD -1
@@ -117,7 +114,6 @@ float calcolaResistenza(float speed, float aereodinamicita){
     return speed * fabs(speed) * (aereodinamicita / 1000.0f);
 }
 
-
 void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
     float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->direzione_degree)));
     float y_speed = -tot_speed * sin((conversioneInRadianti(c_jet->direzione_degree)));
@@ -125,18 +121,17 @@ void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
     c_jet->speed.y = y_speed;
 }
 
-
 void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
-    c_jet->direzione_degree = START_DIRECTION;
+    c_jet->directionDegree = START_DIRECTION;
     c_jet->position.x = screenWidth / 2;
     c_jet->position.y = screenHeight / 2;
     c_jet->speed.x = 0;
     c_jet->speed.y = 0;
 
-    inizializzaTriangle(c_jet, t, 10);
+    buildTriangle(c_jet, t, 10);
 
-    for(int i = 0; i < c_jet->numero_proiettili_in_campo; i++)
-        free(c_jet->proiettili_in_campo[i]);
+    for(int i = 0; i < c_jet->numAliveProjectile; i++)
+        c_jet->proiettiliInCampo[i].
 
     c_jet->numero_proiettili_in_campo = 0;
 }
