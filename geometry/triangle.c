@@ -25,10 +25,10 @@ void disegnaTriangolo(Triangolo *t){
     DrawTriangle(t->vertice_relativo, t->base_sx_relativo, t->base_dx_relativo, BLUE);
 }
 
-void rotate_triangolo(CompleteJet *c_jet, Triangolo *t){
-    Vector2 center = {c_jet->position.x, c_jet->position.y};
-    float coseno = cos(conversioneInRadianti(c_jet->direzione_degree - 90));
-    float seno = sin(conversioneInRadianti(c_jet->direzione_degree - 90));
+void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
+    Vector2 center = {position.x, position.y};
+    float cos = cos(conversioneInRadianti(direzione_degree - 90));
+    float sin = sin(conversioneInRadianti(direzione_degree - 90));
 
     Vector2 vertice = t->vertice_assoluto;
     Vector2 base_sx = t->base_sx_assoluto;
@@ -56,15 +56,14 @@ void rotate_triangolo(CompleteJet *c_jet, Triangolo *t){
     base_dx2.x = base_dx.x;
     base_dx2.y = base_dx.y;
 
+    vertice.x = vertice2.x * cos - vertice2.y * sin;
+    vertice.y = vertice2.x * sin + vertice2.y * cos;
 
-    vertice.x = vertice2.x * coseno - vertice2.y * seno;
-    vertice.y = vertice2.x * seno + vertice2.y * coseno;
+    base_sx.x = base_sx2.x * cos - base_sx2.y * sin;
+    base_sx.y = base_sx2.x * sin + base_sx2.y * cos;
 
-    base_sx.x = base_sx2.x * coseno - base_sx2.y * seno;
-    base_sx.y = base_sx2.x * seno + base_sx2.y * coseno;
-
-    base_dx.x = base_dx2.x * coseno - base_dx2.y * seno;
-    base_dx.y = base_dx2.x * seno + base_dx2.y * coseno;
+    base_dx.x = base_dx2.x * cos - base_dx2.y * sin;
+    base_dx.y = base_dx2.x * sin + base_dx2.y * cos;
 
 
     vertice.x  = vertice.x  + center.x;

@@ -12,9 +12,6 @@ typedef struct{
 } Triangolo;
 
 
-
-
 void buildTriangle(Triangolo *t, Vector2 position, int size);
 void disegnaTriangolo(Triangolo *t);
-void disegnaProiettile(CompleteJet *c_jet);
-void rotate_triangolo(CompleteJet *c_jet, Triangolo *t);
+void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree);

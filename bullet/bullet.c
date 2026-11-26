@@ -1,6 +1,40 @@
 #include "bullet.h"
 
+void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position){
+    p->directionDegree = directionDegree;
+    p->position.x = position.x;
+    p->position.y = position.y;
+    float totSpeed = sqrt(speed.x * speed.x + speed.y * speed.y);
 
+    totSpeed += 70;
+
+    p->speed.x = totSpeed * -cos(conversioneInRadianti(directionDegree));
+    p->speed.y = totSpeed * -sin(conversioneInRadianti(directionDegree));
+    p->size = STANDARD_BULLET_SIZE;
+
+    DrawText(TextFormat("spd: %.1f", totSpeed), 20, 260, 30, MAGENTA);
+}
+
+void disegnaProiettile(Proiettile *proiettile){
+    DrawCircle(proiettile->position.x, proiettile->position.y, proiettile->size, RED);
+}
+
+/* boh la salvo cosi perchè si tanto mica pesa
+void disegnaProiettile(CompleteJet *c_jet){
+    for(int i = 0; i < c_jet->numero_proiettili_in_campo; i++){
+        if(checkIfIsOutOfScreen(c_jet->proiettili_in_campo[i]->position) == OUT_OF_SCREEN){
+            free(c_jet->proiettili_in_campo[i]);
+            c_jet->numero_proiettili_in_campo--;
+            c_jet->proiettili_in_campo[i] = c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo];
+        }
+        c_jet->proiettili_in_campo[i]->position.x += c_jet->proiettili_in_campo[i]->speed.x / FPS;
+        c_jet->proiettili_in_campo[i]->position.y += c_jet->proiettili_in_campo[i]->speed.y / FPS;
+        DrawCircle(c_jet->proiettili_in_campo[i]->position.x, c_jet->proiettili_in_campo[i]->position.y, c_jet->proiettili_in_campo[i]->size, RED);
+    }
+}*/
+
+
+/*questa deve diventare una funzione spara in c-jet, e poi era il builder di proiettile
 void inizializzaProiettile(CompleteJet *c_jet, Proiettile *p){
     p->direction_degree = c_jet->direzione_degree;
     p->position.x = c_jet->position.x;
@@ -16,17 +50,4 @@ void inizializzaProiettile(CompleteJet *c_jet, Proiettile *p){
     c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo] = p;
     c_jet->numero_proiettili_in_campo++;
     DrawText(TextFormat("spd: %.1f",tot_speed), 20, 260, 30, MAGENTA);
-}
-
-void disegnaProiettile(CompleteJet *c_jet){
-    for(int i = 0; i < c_jet->numero_proiettili_in_campo; i++){
-        if(checkIfIsOutOfScreen(c_jet->proiettili_in_campo[i]->position) == OUT_OF_SCREEN){
-            free(c_jet->proiettili_in_campo[i]);
-            c_jet->numero_proiettili_in_campo--;
-            c_jet->proiettili_in_campo[i] = c_jet->proiettili_in_campo[c_jet->numero_proiettili_in_campo];
-        }
-        c_jet->proiettili_in_campo[i]->position.x += c_jet->proiettili_in_campo[i]->speed.x / FPS;
-        c_jet->proiettili_in_campo[i]->position.y += c_jet->proiettili_in_campo[i]->speed.y / FPS;
-        DrawCircle(c_jet->proiettili_in_campo[i]->position.x, c_jet->proiettili_in_campo[i]->position.y, c_jet->proiettili_in_campo[i]->size, RED);
-    }
-}
+}*/

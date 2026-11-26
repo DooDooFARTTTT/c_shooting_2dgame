@@ -25,6 +25,7 @@ typedef struct CompleteJet{
 
 void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offset_y);
 void sparaProiettile(CompleteJet *c_jet);
+void disegnaProiettile(CompleteJet *c_jet);
 void virare(CompleteJet *c_jet, Triangolo *t, int verso);
 void ricarica(CompleteJet *c_jet);
 void accellera(CompleteJet *c_jet);
@@ -34,3 +35,4 @@ void rallenta(CompleteJet *c_jet);
 //dato UN VETTORE, l'accellerazione per frame, l'aereodinamica e la velocita, calcolo quanto è l'accellerazione per ogni frame
 float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa);
 void drawTotSpeed(CompleteJet *c_jet);
+
