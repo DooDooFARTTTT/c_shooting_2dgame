@@ -1,22 +1,30 @@
 #include "bullet.h"
 
 void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position){
-    p->directionDegree = directionDegree;
-    p->position.x = position.x;
-    p->position.y = position.y;
     float totSpeed = sqrt(speed.x * speed.x + speed.y * speed.y);
 
     totSpeed += 70;
 
+    p->directionDegree = directionDegree;
+    p->size = STANDARD_BULLET_SIZE;
+    p->position.x = position.x;
+    p->position.y = position.y;
     p->speed.x = totSpeed * -cos(conversioneInRadianti(directionDegree));
     p->speed.y = totSpeed * -sin(conversioneInRadianti(directionDegree));
-    p->size = STANDARD_BULLET_SIZE;
-
-    DrawText(TextFormat("spd: %.1f", totSpeed), 20, 260, 30, MAGENTA);
 }
 
 void disegnaProiettile(Proiettile *proiettile){
     DrawCircle(proiettile->position.x, proiettile->position.y, proiettile->size, RED);
+}
+
+void updateBulletPos(Proiettile* proiettile){
+    proiettile->position.x += proiettile->speed.x / FPS;
+    proiettile->position.y += proiettile->speed.y / FPS;
+}
+
+void updateBulletPos(Proiettile* proiettile){
+    float totSpeed = sqrt(proiettile->speed.x * proiettile->speed.x + proiettile->speed.y * proiettile->speed.y);
+    DrawText(TextFormat("spd: %.1f", totSpeed), 20, 260, 30, MAGENTA);
 }
 
 /* boh la salvo cosi perchè si tanto mica pesa

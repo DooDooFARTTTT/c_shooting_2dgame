@@ -1,6 +1,8 @@
 #include "raylib.h"
 
 #define STANDARD_BULLET_SIZE 5
+#define FPS 60
+
 
 typedef struct Proiettile{
     float directionDegree;
@@ -9,5 +11,7 @@ typedef struct Proiettile{
     Vector2 speed;
 } Proiettile;
 
-void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position); 
-void disegnaProiettile(CompleteJet *c_jet);
+void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position);
+void disegnaProiettile(Proiettile *proiettile);
+void updateBulletPos(Proiettile* proiettile);
+void updateBulletPos(Proiettile* proiettile);
