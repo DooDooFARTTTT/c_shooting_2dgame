@@ -1,5 +1,6 @@
+#pragma once
+
 #include "raylib.h"
-#include "completeJet/completeJet.h"
 
 typedef struct{
     Vector2 vertAbs;

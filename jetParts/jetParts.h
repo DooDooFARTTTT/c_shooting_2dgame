@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct Wings{
     float peso;
     float costo;

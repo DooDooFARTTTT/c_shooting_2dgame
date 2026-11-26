@@ -1,3 +1,5 @@
+#pragma once
+
 #include "raylib.h"
 
 #define STANDARD_BULLET_SIZE 5

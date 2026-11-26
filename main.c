@@ -18,7 +18,6 @@
 #define PLAYER 0
 #define RESET_INCOHERENCE 104
 
-const int FPS = 60;
 const int screenWidth = 900;
 const int screenHeight = 562;
 

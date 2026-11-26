@@ -1,9 +1,13 @@
+#pragma once
+
 #include "raylib.h"
 #include "jet.h"
 #include "bullet/bullet.h"
 #include "geometry/triangle.h"
 
 #define START_DIRECTION 90
+#define FPS 60
+#define MAX_ALIVE_BULLETS 100
 
 typedef struct CompleteJet{
     Jet jet;
@@ -13,19 +17,18 @@ typedef struct CompleteJet{
     Vector2 speed;
     Vector2 position;
 
-    float accellerazione_per_frame;
-    float stall_speed;
-    float peso;
-    float direzione_degree;
+    float accPerFrame;
+    float stallSpeed;
+    float weight;
+    float directionDegree;
     
-    int numero_proiettili_in_campo;
-    int resistenza_tot;
-    int resistenza_attuale;
+    int numAliveProjectile;
+    int resistenzaTot;
+    int resistenzaAttuale;
 }CompleteJet;
 
-void builCompleteJetNemico(CompleteJet *c_jet, Jet* jet, int offset_x, int offset_y);
+void builCompleteJet(CompleteJet *c_jet, Jet* jet, Triangolo* triangolo, int offsetX, int offsetY);
 void sparaProiettile(CompleteJet *c_jet);
-void disegnaProiettile(CompleteJet *c_jet);
 void virare(CompleteJet *c_jet, Triangolo *t, int verso);
 void ricarica(CompleteJet *c_jet);
 void accellera(CompleteJet *c_jet);

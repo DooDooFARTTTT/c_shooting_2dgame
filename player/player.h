@@ -1,3 +1,5 @@
+#pragma once
+
 #include "..\completeJet/completeJet.h"
 
 typedef struct Player{

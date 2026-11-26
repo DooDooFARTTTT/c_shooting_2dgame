@@ -1,5 +1,5 @@
 #include "triangle.h"
-#include "completeJet/completeJet.h"
+#include <math.h>
 
 void buildTriangle(Triangolo *t, Vector2 position, int size){
     t->vertAbs.x = position.x;
@@ -11,28 +11,28 @@ void buildTriangle(Triangolo *t, Vector2 position, int size){
     t->baseDxAbs.x = position.x + size;
     t->baseDxAbs.y = position.y + size;
 
-    t->vertRel.x = vertAbs.x;
-    t->vertRel.y = vertAbs.y;
+    t->vertRel.x = t->vertAbs.x;
+    t->vertRel.y = t->vertAbs.y;
 
-    t->baseSxRel.x = baseSxRel.x;
-    t->baseSxRel.y = baseSxRel.y;
+    t->baseSxRel.x = t->baseSxRel.x;
+    t->baseSxRel.y = t->baseSxRel.y;
 
-    t->baseDxRel.x = baseDxRel.x;
-    t->baseDxRel.y = baseDxRel.y;
+    t->baseDxRel.x = t->baseDxRel.x;
+    t->baseDxRel.y = t->baseDxRel.y;
 }
 
 void disegnaTriangolo(Triangolo *t){
-    DrawTriangle(t->vertice_relativo, t->base_sx_relativo, t->base_dx_relativo, BLUE);
+    DrawTriangle(t->vertRel, t->baseSxRel, t->baseDxRel, BLUE);
 }
 
 void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
     Vector2 center = {position.x, position.y};
-    float cos = cos(conversioneInRadianti(direzione_degree - 90));
-    float sin = sin(conversioneInRadianti(direzione_degree - 90));
+    float coseno = cos(conversioneInRadianti(directionDegree - 90));
+    float seno = sin(conversioneInRadianti(directionDegree - 90));
 
-    Vector2 vertice = t->vertice_assoluto;
-    Vector2 base_sx = t->base_sx_assoluto;
-    Vector2 base_dx = t->base_dx_assoluto;
+    Vector2 vertice = t->vertAbs;
+    Vector2 base_sx = t->baseSxAbs;
+    Vector2 base_dx = t->baseDxAbs;
 
     Vector2 vertice2;
     Vector2 base_sx2;
@@ -56,14 +56,14 @@ void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
     base_dx2.x = base_dx.x;
     base_dx2.y = base_dx.y;
 
-    vertice.x = vertice2.x * cos - vertice2.y * sin;
-    vertice.y = vertice2.x * sin + vertice2.y * cos;
+    vertice.x = vertice2.x * coseno - vertice2.y * seno;
+    vertice.y = vertice2.x * seno + vertice2.y * coseno;
 
-    base_sx.x = base_sx2.x * cos - base_sx2.y * sin;
-    base_sx.y = base_sx2.x * sin + base_sx2.y * cos;
+    base_sx.x = base_sx2.x * coseno - base_sx2.y * seno;
+    base_sx.y = base_sx2.x * seno + base_sx2.y * coseno;
 
-    base_dx.x = base_dx2.x * cos - base_dx2.y * sin;
-    base_dx.y = base_dx2.x * sin + base_dx2.y * cos;
+    base_dx.x = base_dx2.x * coseno - base_dx2.y * seno;
+    base_dx.y = base_dx2.x * seno + base_dx2.y * coseno;
 
 
     vertice.x  = vertice.x  + center.x;
@@ -75,7 +75,7 @@ void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
     base_dx.x  = base_dx.x  + center.x;
     base_dx.y  = base_dx.y  + center.y;
 
-    t->vertice_relativo = vertice;
-    t->base_sx_relativo = base_sx;
-    t->base_dx_relativo = base_dx;
+    t->vertAbs = vertice;
+    t->baseSxAbs = base_sx;
+    t->baseDxRel = base_dx;
 }

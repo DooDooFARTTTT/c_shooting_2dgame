@@ -1,3 +1,5 @@
+#pragma once
+
 #include "jetParts/jetParts.h"
 
 typedef struct Jet{
