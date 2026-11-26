@@ -18,3 +18,4 @@ typedef struct{
 void buildTriangle(Triangolo *t, Vector2 position, int size);
 void disegnaTriangolo(Triangolo *t);
 void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree);
+void updateTrianglePos(Triangolo *t, Vector2 speed, Vector2 position);

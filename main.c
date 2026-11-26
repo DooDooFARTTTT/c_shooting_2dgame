@@ -115,8 +115,8 @@ float calcolaResistenza(float speed, float aereodinamicita){
 }
 
 void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
-    float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->direzione_degree)));
-    float y_speed = -tot_speed * sin((conversioneInRadianti(c_jet->direzione_degree)));
+    float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->directionDegree)));
+    float y_speed = -tot_speed * sin((conversioneInRadianti(c_jet->directionDegree)));
     c_jet->speed.x = x_speed;
     c_jet->speed.y = y_speed;
 }
@@ -128,12 +128,12 @@ void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
     c_jet->speed.x = 0;
     c_jet->speed.y = 0;
 
-    buildTriangle(c_jet, t, 10);
+    buildTriangle(t, c_jet->position, 10);
 
     for(int i = 0; i < MAX_ALIVE_BULLETS; i++)
         c_jet->proiettiliInCampo[i].alive = false;
 
-    c_jet->numero_proiettili_in_campo = 0;
+    c_jet->numAliveProjectile = 0;
 }
 
 /*
@@ -158,12 +158,11 @@ void resetta_gioco_nemico(CompleteJet *c_jet, Triangolo *t, int offset_x, int of
 
 
 char checkInVita(CompleteJet *c_jet){
-    if(c_jet->resistenza_attuale <= 0)
+    if(c_jet->resistenzaAttuale <= 0)
         return 1;
 
     return 0;
 }
-
 
 
 /*
@@ -211,7 +210,7 @@ int main(){
     Airframe dog_cheat = {45, 25, 90, 5, 20};
     Gun splatter_cheat = {15, 20, 40, 100, 200};
 
-
+/*
     //char *name, Triangolo *t, Engine *e, Airframe *a, Gun *g, Wings *w, int offset_x, int offset_y
     CompleteJet c_jet;
     CompleteJet *c_jet_ptr = &c_jet;
@@ -232,23 +231,28 @@ int main(){
     Triangolo *t_nemico_ptr = &t_nemico;
     builCompleteJetNemico("nemico", c_nemico_jet_ptr, &fast1, &dog1, &splatter, &wings1, 0, 100);
     inizializzaTriangle(c_nemico_jet_ptr, t_nemico_ptr, 10);
-
+*/
+    Player *player1;
+    buildPlayer(player1, "gianfranco");
+    buildJet(&player1->completeJet.jet, &fast1, &dog1, &splatter, &wings1);
+    builCompleteJet(&player1->completeJet, &player1->completeJet.jet, &player1->completeJet.triangolo, 0, 0);
 
     while (!WindowShouldClose()){
         BeginDrawing();
-            if(IsKeyDown(KEY_S)) rallenta(c_jet_ptr);
-            if(IsKeyDown(KEY_W)) accellera(c_jet_ptr);
-            if(IsKeyDown(KEY_D)) virare(c_jet_ptr, t_ptr, 1);
-            if(IsKeyDown(KEY_A)) virare(c_jet_ptr, t_ptr, -1);
-            if(IsKeyDown(KEY_SPACE)){sparaProiettile(c_jet_ptr); DrawText(TextFormat("n.b: %d",c_jet_ptr->numero_proiettili_in_campo), 20, 300, 30, YELLOW);}
+            if(IsKeyDown(KEY_S)) rallenta(&player1->completeJet);
+            if(IsKeyDown(KEY_W)) accellera(&player1->completeJet);
+            if(IsKeyDown(KEY_D)) virare(&player1->completeJet, &player1->completeJet.triangolo, 1);
+            if(IsKeyDown(KEY_A)) virare(&player1->completeJet, &player1->completeJet.triangolo, -1);
+            if(IsKeyDown(KEY_SPACE)){sparaProiettile(&player1->completeJet); DrawText(TextFormat("n.b: %d",&player1->completeJet.numAliveProjectile), 20, 300, 30, YELLOW);}
             
-            if(IsKeyDown(KEY_R)) {resetta_gioco(c_jet_ptr, t_ptr); resetta_gioco_nemico(c_nemico_jet_ptr, t_nemico_ptr, 0, 100);}
+            if(IsKeyDown(KEY_R)) {resetta_gioco(&player1->completeJet, &player1->completeJet.triangolo); //(()) resetta_gioco_nemico(c_nemico_jet_ptr, t_nemico_ptr, 0, 100);}
 
             ClearBackground(BLACK);
-            aggiornaPosizione(c_jet_ptr, t_ptr);
-            ricarica(c_jet_ptr);
+            updateComJetPos(&player1->completeJet);
+            updateTrianglePos(&player1->completeJet.triangolo, player1->completeJet.speed, player1->completeJet.position);
+            ricarica(&player1->completeJet);
             
-
+/*
             if(checkInVita(c_nemico_jet_ptr) == 0){
                 checkCollisionBullets(c_nemico_jet_ptr, c_jet_ptr);
                 disegnaTriangolo(t_nemico_ptr);
@@ -258,32 +262,33 @@ int main(){
             }else{
                 DrawText("HAI VINTO", 200, screenHeight/2, 100, RED);
             }
-
-            if(c_jet_ptr->position.y >= (float)screenHeight - 10 || c_jet_ptr->position.x <= 0 + 10)
+*/
+            if(player1->completeJet.position.y >= (float)screenHeight - 10 || player1->completeJet.position.x <= 0 + 10)
                 DrawText("Qisha Dodo", (float)screenWidth / 2, (float)screenHeight / 2, 20, LIGHTGRAY);
 
-            disegnaTriangolo(t_ptr);
+            disegnaTriangolo(&player1->completeJet.triangolo);
 
 
 
-            if(c_jet_ptr->numero_proiettili_in_campo > 0){
-                disegnaProiettile(c_jet_ptr);
-                for(int i = 0; i < c_jet_ptr->numero_proiettili_in_campo; i++){
+            if(&player1->completeJet.numAliveProjectile > 0){
+                //disegnaProiettile(&player1->completeJet);
+                /*for(int i = 0; i < c_jet_ptr->numero_proiettili_in_campo; i++){
                     spostati_se_bersagliato(c_nemico_jet_ptr, c_jet_ptr->proiettili_in_campo[i]);
-                }
+                }*/
             }
             
             
 
-            DrawText(TextFormat("E_hp: %d", c_nemico_jet_ptr->resistenza_attuale), 450, 10, 30, RED);
-            DrawText(TextFormat("Y pos: %.2f",c_jet_ptr->position.y), 20, 10, 30, RED);
-            DrawText(TextFormat("X pos: %.2f",c_jet_ptr->position.x), 20, 40, 30, RED);
-            DrawText(TextFormat("Y spd: %.2f",c_jet_ptr->speed.y), 20, 70, 30, GREEN);
-            DrawText(TextFormat("X spd: %.2f",c_jet_ptr->speed.x), 20, 100, 30, GREEN);
-            DrawText(TextFormat("%.2f",c_jet_ptr->peso), 20, screenHeight - 20, 30, ORANGE);
-            drawTotSpeed(c_jet_ptr);
-            DrawText(TextFormat("enm spd: %.2f",sqrt(c_nemico_jet_ptr->speed.y * c_nemico_jet_ptr->speed.y) + (c_nemico_jet_ptr->speed.x * c_nemico_jet_ptr->speed.x)), 20, 400, 30, ORANGE);
+            //DrawText(TextFormat("E_hp: %d", c_nemico_jet_ptr->resistenza_attuale), 450, 10, 30, RED);
+            DrawText(TextFormat("Y pos: %.2f", &player1->completeJet.position.y), 20, 10, 30, RED);
+            DrawText(TextFormat("X pos: %.2f", &player1->completeJet.position.x), 20, 40, 30, RED);
+            DrawText(TextFormat("Y spd: %.2f", &player1->completeJet.speed.y), 20, 70, 30, GREEN);
+            DrawText(TextFormat("X spd: %.2f", &player1->completeJet.speed.x), 20, 100, 30, GREEN);
+            DrawText(TextFormat("%.2f", &player1->completeJet.weight), 20, screenHeight - 20, 30, ORANGE);
+            drawTotSpeed(&player1->completeJet);
+            //DrawText(TextFormat("enm spd: %.2f",sqrt(c_nemico_jet_ptr->speed.y * c_nemico_jet_ptr->speed.y) + (c_nemico_jet_ptr->speed.x * c_nemico_jet_ptr->speed.x)), 20, 400, 30, ORANGE);
 
+        }
         EndDrawing();
         //----------------------------------------------------------------------------------
     }

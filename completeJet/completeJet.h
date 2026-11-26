@@ -38,4 +38,4 @@ void rallenta(CompleteJet *c_jet);
 //dato UN VETTORE, l'accellerazione per frame, l'aereodinamica e la velocita, calcolo quanto è l'accellerazione per ogni frame
 float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa);
 void drawTotSpeed(CompleteJet *c_jet);
-
+void updateComJetPos(CompleteJet* c_jet);

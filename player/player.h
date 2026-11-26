@@ -5,7 +5,7 @@
 typedef struct Player{
     char name[64];
     int points;
-    CompleteJet CompleteJet;
+    CompleteJet completeJet;
 }Player;
 
-void buildPlayer(Player* player, char* name, CompleteJet CompleteJet);
+void buildPlayer(Player* player, char* name);
