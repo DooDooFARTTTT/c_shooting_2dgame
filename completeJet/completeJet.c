@@ -129,3 +129,8 @@ void drawTotSpeed(CompleteJet *c_jet){
     else if(tot_speed > c_jet->jet.wings.perfect_turn_speed * 1.05)
         DrawText(TextFormat("spd: %.1f",tot_speed), 20, 190, 30, BLUE);
 }
+
+void updateComJetPos(CompleteJet* c_jet){
+    c_jet->position.x += c_jet->speed.x / FPS;
+    c_jet->position.y += c_jet->speed.y / FPS;
+}

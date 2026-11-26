@@ -2,6 +2,8 @@
 
 #include "raylib.h"
 
+#define FPS 60
+
 typedef struct{
     Vector2 vertAbs;
     Vector2 baseSxAbs;

@@ -130,8 +130,8 @@ void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
 
     buildTriangle(c_jet, t, 10);
 
-    for(int i = 0; i < c_jet->numAliveProjectile; i++)
-        c_jet->proiettiliInCampo[i].
+    for(int i = 0; i < MAX_ALIVE_BULLETS; i++)
+        c_jet->proiettiliInCampo[i].alive = false;
 
     c_jet->numero_proiettili_in_campo = 0;
 }
@@ -152,28 +152,7 @@ void resetta_gioco_nemico(CompleteJet *c_jet, Triangolo *t, int offset_x, int of
     c_jet->numero_proiettili_in_campo = 0;
 }
 
-void aggiornaPosizione(CompleteJet *c_jet, Triangolo *t){
-    c_jet->position.x += c_jet->speed.x / FPS;
-    c_jet->position.y += c_jet->speed.y / FPS;
 
-
-    t->vertice_assoluto.x += c_jet->speed.x / FPS;
-    t->vertice_assoluto.y += c_jet->speed.y / FPS;
-
-    t->base_sx_assoluto.x += c_jet->speed.x / FPS;
-    t->base_sx_assoluto.y += c_jet->speed.y / FPS;
-
-    t->base_dx_assoluto.x += c_jet->speed.x / FPS;
-    t->base_dx_assoluto.y += c_jet->speed.y / FPS;
-
-    t->vertice_relativo.x += c_jet->speed.x / FPS;
-    t->vertice_relativo.y += c_jet->speed.y / FPS;
-
-    t->base_sx_relativo.x += c_jet->speed.x / FPS;
-    t->base_sx_relativo.y += c_jet->speed.y / FPS;
-
-    t->base_dx_relativo.x += c_jet->speed.x / FPS;
-    t->base_dx_relativo.y += c_jet->speed.y / FPS;
 }*/
 
 

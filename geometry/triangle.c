@@ -79,3 +79,23 @@ void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
     t->baseSxAbs = base_sx;
     t->baseDxRel = base_dx;
 }
+
+void updateTrianglePos(Triangolo *t, Vector2 speed, Vector2 position){
+    t->vertAbs.x += speed.x / FPS;
+    t->vertAbs.y += speed.y / FPS;
+
+    t->baseSxAbs.x += speed.x / FPS;
+    t->baseSxAbs.y += speed.y / FPS;
+
+    t->baseDxAbs.x += speed.x / FPS;
+    t->baseDxAbs.y += speed.y / FPS;
+
+    t->vertRel.x += speed.x / FPS;
+    t->vertRel.y += speed.y / FPS;
+
+    t->baseSxRel.x += speed.x / FPS;
+    t->baseSxRel.y += speed.y / FPS;
+
+    t->baseDxRel.x += speed.x / FPS;
+    t->baseDxRel.y += speed.y / FPS;
+}
