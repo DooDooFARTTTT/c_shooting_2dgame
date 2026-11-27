@@ -17,5 +17,4 @@ typedef struct Proiettile{
 void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position);
 void disegnaProiettile(Proiettile *proiettile);
 void updateBulletPos(Proiettile* proiettile);
-void updateBulletPos(Proiettile* proiettile);
 static inline double conversioneInRadianti(double degree);

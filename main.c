@@ -219,7 +219,7 @@ int main(){
     inizializzaTriangle(c_nemico_jet_ptr, t_nemico_ptr, 10);
 */
     Player *player1 = buildPlayer("gianfranco");
-    player1->completeJet = builCompleteJet(buildJet(&fast1, &dog1, &splatter, &wings1), buildTriangle((Vector2){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2}, 10), 0, 0);
+    player1->completeJet = builCompleteJet(buildJet(&fast_cheat, &dog_cheat, &splatter_cheat, &wings_cheat), buildTriangle((Vector2){SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2}, 10), 0, 0);
 
     while(!WindowShouldClose()){
         BeginDrawing();
@@ -260,10 +260,13 @@ int main(){
 
 
             if(player1->completeJet.numAliveProjectile > 0){
-                //disegnaProiettile(&player1->completeJet);
-                /*for(int i = 0; i < c_jet_ptr->numero_proiettili_in_campo; i++){
-                    spostati_se_bersagliato(c_nemico_jet_ptr, c_jet_ptr->proiettili_in_campo[i]);
-                }*/
+                for(int i = 0; i < MAX_ALIVE_BULLETS; i++){
+                    if(player1->completeJet.proiettiliInCampo[i].alive == true){
+                        updateBulletPos(&player1->completeJet.proiettiliInCampo[i]);
+                        disegnaProiettile(&player1->completeJet.proiettiliInCampo[i]);
+
+                    }
+                }
             }
             
             

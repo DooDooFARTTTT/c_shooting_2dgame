@@ -29,6 +29,15 @@ CompleteJet builCompleteJet(Jet jet, Triangolo triangolo, int offsetX, int offse
 void sparaProiettile(CompleteJet *c_jet){
     if(c_jet->numAliveProjectile > MAX_ALIVE_BULLETS){
         DrawText("max ammo", 20, 500, 30, BLUE);
+        return;
+    }
+
+    for(int i = 0; i < MAX_ALIVE_BULLETS; i++){
+        if(c_jet->proiettiliInCampo[i].alive == false){
+            BuildProiettile(&c_jet->proiettiliInCampo[i], c_jet->directionDegree, c_jet->speed, c_jet->position);
+            c_jet->numAliveProjectile++;
+            break;
+        }
     }
 }
 
