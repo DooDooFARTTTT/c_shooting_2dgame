@@ -1,27 +1,11 @@
 #include "completeJet.h"
 #include "jetParts/jetParts.h"
-#include "stdlib.h"
+#include <math.h>
+
 
 const int screenWidth = 900;
 const int screenHeight = 562;
 
-typedef struct CompleteJet{
-    Jet jet;
-    Triangolo triangolo;
-    Proiettile proiettiliInCampo[100];
-    
-    Vector2 speed;
-    Vector2 position;
-
-    float weight;
-    float accPerFrame;
-    float stallSpeed;
-    float directionDegree;
-    
-    int numAliveProjectile;
-    int resistenzaTot;
-    int resistenzaAttuale;
-}CompleteJet;
 
 void builCompleteJet(CompleteJet *c_jet, Jet* jet, Triangolo* triangolo, int offsetX, int offsetY){
     //COMPONENTI DI COMPLETED JET
@@ -133,4 +117,21 @@ void drawTotSpeed(CompleteJet *c_jet){
 void updateComJetPos(CompleteJet* c_jet){
     c_jet->position.x += c_jet->speed.x / FPS;
     c_jet->position.y += c_jet->speed.y / FPS;
+}
+
+void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
+    float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->directionDegree)));
+    float y_speed = -tot_speed * sin((conversioneInRadianti(c_jet->directionDegree)));
+    c_jet->speed.x = x_speed;
+    c_jet->speed.y = y_speed;
+}
+
+//Data la velocità di UN VETTORE, e il valore aereodinamico dell'airframe di un jet, ritorna un float di resistenza aereodinamica
+float calcolaResistenza(float speed, float aereodinamicita){
+    return speed * fabs(speed) * (aereodinamicita / 1000.0f);
+}
+
+//mi sembra ovvio
+static inline double conversioneInRadianti(double degree){
+    return (degree * PI) / 180;
 }

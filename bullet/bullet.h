@@ -18,3 +18,4 @@ void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector
 void disegnaProiettile(Proiettile *proiettile);
 void updateBulletPos(Proiettile* proiettile);
 void updateBulletPos(Proiettile* proiettile);
+static inline double conversioneInRadianti(double degree);

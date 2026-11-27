@@ -39,3 +39,6 @@ void rallenta(CompleteJet *c_jet);
 float calculate_accelleration(float accellerazione_per_frame, float aereodinamicita, float speed, char stampa);
 void drawTotSpeed(CompleteJet *c_jet);
 void updateComJetPos(CompleteJet* c_jet);
+void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed);
+float calcolaResistenza(float speed, float aereodinamicita);
+static inline double conversioneInRadianti(double degree);

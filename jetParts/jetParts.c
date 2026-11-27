@@ -1,21 +1,33 @@
 #include "jetParts.h"
 
-void buildWings(float peso, float costo, float resistenza, float turnCapability, float perfectTurnSpd){
-    Wings newWings = {peso, costo, resistenza, turnCapability, perfectTurnSpd};
-    return newWings;
+void buildWings(Wings *wings, float peso, float costo, float resistenza, float turnCapability, float perfectTurnSpd){
+    wings->peso = peso;
+    wings->costo = costo;
+    wings->resistenza = resistenza;
+    wings->turn_capability = turnCapability;
+    wings->perfect_turn_speed = perfectTurnSpd;
 }
 
-void buildEngine(float peso, float costo, float resistenza, float potenza){
-    Engine newEngine = {peso, costo, resistenza, potenza};
-    return newEngine;
+void buildEngine(Engine *engine, float peso, float costo, float resistenza, float potenza){
+    engine->peso = peso;
+    engine->costo = costo;
+    engine->resistenza = resistenza;
+    engine->potenza = potenza;
 }
 
-void buildAirframe(float peso, float costo, float resistenza, float aereodinamicita, float aereofreno){
-    Airframe newAirframe = {peso, costo, resistenza, aereodinamicita, aereofreno};
-    return newAirframe;
+void buildAirframe(Airframe *airframe, float peso, float costo, float resistenza, float aereodinamicita, float aereofreno){
+    airframe->peso = peso;
+    airframe->costo = costo;
+    airframe->resistenza = resistenza;
+    airframe->aereodinamicita = aereodinamicita;
+    airframe->aereofreno = aereofreno;
 }
 
-void buildGun(float peso, float costo, float bulletDamage, float ammo, float firerate){
-    Gun newGun = {peso, costo, bulletDamage, ammo, firerate, 0};
-    return newGun;
+void buildGun(Gun* gun, float peso, float costo, float bulletDamage, float ammo, float firerate){
+    gun->peso = peso;
+    gun->costo = costo;
+    gun->damage_per_bullet = bulletDamage;
+    gun->munizioni = ammo;
+    gun->firerate = firerate;
+    gun->ricarica_rimasta = 0;
 }

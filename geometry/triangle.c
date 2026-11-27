@@ -99,3 +99,8 @@ void updateTrianglePos(Triangolo *t, Vector2 speed, Vector2 position){
     t->baseDxRel.x += speed.x / FPS;
     t->baseDxRel.y += speed.y / FPS;
 }
+
+//mi sembra ovvio
+static inline double conversioneInRadianti(double degree){
+    return (degree * PI) / 180;
+}

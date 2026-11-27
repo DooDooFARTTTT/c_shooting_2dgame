@@ -1,4 +1,10 @@
 #include "bullet.h"
+#include <math.h>
+
+//mi sembra ovvio
+static inline double conversioneInRadianti(double degree){
+    return (degree * PI) / 180;
+}
 
 void BuildProiettile(Proiettile *p, float directionDegree, Vector2 speed, Vector2 position){
     float totSpeed = sqrt(speed.x * speed.x + speed.y * speed.y);
@@ -21,11 +27,6 @@ void disegnaProiettile(Proiettile *proiettile){
 void updateBulletPos(Proiettile* proiettile){
     proiettile->position.x += proiettile->speed.x / FPS;
     proiettile->position.y += proiettile->speed.y / FPS;
-}
-
-void updateBulletPos(Proiettile* proiettile){
-    float totSpeed = sqrt(proiettile->speed.x * proiettile->speed.x + proiettile->speed.y * proiettile->speed.y);
-    DrawText(TextFormat("spd: %.1f", totSpeed), 20, 260, 30, MAGENTA);
 }
 
 /* boh la salvo cosi perchè si tanto mica pesa

@@ -31,3 +31,8 @@ typedef struct Gun{
     float firerate;
     float ricarica_rimasta;
 } Gun;
+
+void buildWings(Wings *wings, float peso, float costo, float resistenza, float turnCapability, float perfectTurnSpd);
+void buildEngine(Engine *engine, float peso, float costo, float resistenza, float potenza);
+void buildAirframe(Airframe *airframe, float peso, float costo, float resistenza, float aereodinamicita, float aereofreno);
+void buildGun(Gun *gun, float peso, float costo, float bulletDamage, float ammo, float firerate);

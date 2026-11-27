@@ -6,7 +6,6 @@
 #include "geometry/triangle.h"
 #include "jetParts/jetParts.h"
 
-#include <stdlib.h>
 #include <math.h>
 
 #define FRONT 1
@@ -109,17 +108,9 @@ char checkIfIsOutOfScreen(Vector2 position){
     return 0;
 }
 
-//Data la velocità di UN VETTORE, e il valore aereodinamico dell'airframe di un jet, ritorna un float di resistenza aereodinamica
-float calcolaResistenza(float speed, float aereodinamicita){
-    return speed * fabs(speed) * (aereodinamicita / 1000.0f);
-}
 
-void ricalcolo_gognometrico_velocita(CompleteJet *c_jet, float tot_speed){
-    float x_speed = -tot_speed * cos((conversioneInRadianti(c_jet->directionDegree)));
-    float y_speed = -tot_speed * sin((conversioneInRadianti(c_jet->directionDegree)));
-    c_jet->speed.x = x_speed;
-    c_jet->speed.y = y_speed;
-}
+
+
 
 void resetta_gioco(CompleteJet *c_jet, Triangolo *t){
     c_jet->directionDegree = START_DIRECTION;
