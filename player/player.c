@@ -1,15 +1,15 @@
 #include "player.h"
-#include "completeJet/completeJet.h"
 #include <stdlib.h>
 #include <string.h>
 
-void buildPlayer(Player* player, char* name){
-    player = malloc(sizeof(player));
+Player* buildPlayer(char* name){
+    Player *newPlayer = (Player*)malloc(sizeof(Player));
 
-    if(player == NULL){
-        return;
+    if(newPlayer == NULL){
+        return NULL;
     }
 
-    strcpy(player->name, name);
+    strcpy(newPlayer->name, name);
+    return newPlayer;
 }
 

@@ -1,33 +1,33 @@
 #include "completeJet.h"
-#include "jetParts/jetParts.h"
+#include "..\jetParts/jetParts.h"
 #include <math.h>
 
 
-const int screenWidth = 900;
-const int screenHeight = 562;
 
-
-void builCompleteJet(CompleteJet *c_jet, Jet* jet, Triangolo* triangolo, int offsetX, int offsetY){
+CompleteJet builCompleteJet(Jet jet, Triangolo triangolo, int offsetX, int offsetY){
+    CompleteJet c_jet = {0};
     //COMPONENTI DI COMPLETED JET
-    c_jet->jet = *jet;
-    c_jet->triangolo = *triangolo;
+    c_jet.jet = jet;
+    c_jet.triangolo = triangolo;
 
     //DATI DI COMPLETED JET
-    c_jet->speed.x = 0;
-    c_jet->speed.y = 0;
-    c_jet->position.x = screenWidth / 2 - offsetX;
-    c_jet->position.y = screenHeight / 2 - offsetY;
-    c_jet->weight = jet->engine.peso + jet->airframe.peso + jet->gun.peso + jet->wings.peso;;
-    c_jet->accPerFrame =  8.0f * (jet->engine.potenza / c_jet->weight);
-    c_jet->stallSpeed = c_jet->weight / 15;
-    c_jet->directionDegree = START_DIRECTION;
-    c_jet->numAliveProjectile = 0;
-    c_jet->resistenzaTot = jet->engine.resistenza + jet->airframe.resistenza + jet->wings.resistenza;
-    c_jet->resistenzaAttuale = c_jet->resistenzaTot;
+    c_jet.speed.x = 0;
+    c_jet.speed.y = 0;
+    c_jet.position.x = SCREEN_WIDTH / 2 - offsetX;
+    c_jet.position.y = SCREEN_HEIGHT / 2 - offsetY;
+    c_jet.weight = jet.engine.peso + jet.airframe.peso + jet.gun.peso + jet.wings.peso;;
+    c_jet.accPerFrame =  8.0f * (jet.engine.potenza / c_jet.weight);
+    c_jet.stallSpeed = c_jet.weight / 15;
+    c_jet.directionDegree = START_DIRECTION;
+    c_jet.numAliveProjectile = 0;
+    c_jet.resistenzaTot = jet.engine.resistenza + jet.airframe.resistenza + jet.wings.resistenza;
+    c_jet.resistenzaAttuale = c_jet.resistenzaTot;
+
+    return c_jet;
 }
 
 void sparaProiettile(CompleteJet *c_jet){
-    if(c_jet->proiettiliInCampo > MAX_ALIVE_BULLETS){
+    if(c_jet->numAliveProjectile > MAX_ALIVE_BULLETS){
         DrawText("max ammo", 20, 500, 30, BLUE);
     }
 }

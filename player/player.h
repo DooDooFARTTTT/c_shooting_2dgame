@@ -8,4 +8,4 @@ typedef struct Player{
     CompleteJet completeJet;
 }Player;
 
-void buildPlayer(Player* player, char* name);
+Player* buildPlayer(char* name);

@@ -1,24 +1,27 @@
 #include "triangle.h"
 #include <math.h>
 
-void buildTriangle(Triangolo *t, Vector2 position, int size){
-    t->vertAbs.x = position.x;
-    t->vertAbs.y = position.y - size;
+Triangolo buildTriangle(Vector2 position, int size){
+    Triangolo t;
+    t.vertAbs.x = position.x;
+    t.vertAbs.y = position.y - size;
 
-    t->baseSxAbs.x = position.x - size;
-    t->baseSxAbs.y = position.y + size;
+    t.baseSxAbs.x = position.x - size;
+    t.baseSxAbs.y = position.y + size;
 
-    t->baseDxAbs.x = position.x + size;
-    t->baseDxAbs.y = position.y + size;
+    t.baseDxAbs.x = position.x + size;
+    t.baseDxAbs.y = position.y + size;
 
-    t->vertRel.x = t->vertAbs.x;
-    t->vertRel.y = t->vertAbs.y;
+    t.vertRel.x = t.vertAbs.x;
+    t.vertRel.y = t.vertAbs.y;
 
-    t->baseSxRel.x = t->baseSxRel.x;
-    t->baseSxRel.y = t->baseSxRel.y;
+    t.baseSxRel.x = t.baseSxAbs.x;
+    t.baseSxRel.y = t.baseSxAbs.y;
 
-    t->baseDxRel.x = t->baseDxRel.x;
-    t->baseDxRel.y = t->baseDxRel.y;
+    t.baseDxRel.x = t.baseDxAbs.x;
+    t.baseDxRel.y = t.baseDxAbs.y;
+
+    return t;
 }
 
 void disegnaTriangolo(Triangolo *t){
@@ -75,8 +78,8 @@ void rotate_triangolo(Triangolo *t, Vector2 position, float directionDegree){
     base_dx.x  = base_dx.x  + center.x;
     base_dx.y  = base_dx.y  + center.y;
 
-    t->vertAbs = vertice;
-    t->baseSxAbs = base_sx;
+    t->vertRel = vertice;
+    t->baseSxRel = base_sx;
     t->baseDxRel = base_dx;
 }
 

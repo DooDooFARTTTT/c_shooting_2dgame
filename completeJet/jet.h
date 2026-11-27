@@ -1,6 +1,6 @@
 #pragma once
 
-#include "jetParts/jetParts.h"
+#include "..\jetParts/jetParts.h"
 
 typedef struct Jet{
     Engine engine;
@@ -10,4 +10,4 @@ typedef struct Jet{
 }Jet;
 
 
-void buildJet(Jet* jet, Engine *e, Airframe *a, Gun *g, Wings *w);
+Jet buildJet(Engine *e, Airframe *a, Gun *g, Wings *w);
