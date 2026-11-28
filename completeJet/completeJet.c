@@ -27,18 +27,34 @@ CompleteJet builCompleteJet(Jet jet, Triangolo triangolo, int offsetX, int offse
 }
 
 void sparaProiettile(CompleteJet *c_jet){
+    if(c_jet->jet.gun.ricarica_rimasta > 0){
+        return;
+    }
+
     if(c_jet->numAliveProjectile > MAX_ALIVE_BULLETS){
-        DrawText("max ammo", 20, 500, 30, BLUE);
+        DrawText("max ammo", 20, 300, 30, BLUE);
         return;
     }
 
     for(int i = 0; i < MAX_ALIVE_BULLETS; i++){
         if(c_jet->proiettiliInCampo[i].alive == false){
             BuildProiettile(&c_jet->proiettiliInCampo[i], c_jet->directionDegree, c_jet->speed, c_jet->position);
+
             c_jet->numAliveProjectile++;
+            c_jet->jet.gun.ricarica_rimasta = (60 / c_jet->jet.gun.firerate) * 1000;
             break;
         }
     }
+}
+
+void deallocateBullet(CompleteJet* c_jet, Proiettile *proiettile){
+    proiettile->alive = false;
+    proiettile->directionDegree = 0;
+    proiettile->position = (Vector2){0, 0};
+    proiettile->size = 0;
+    proiettile->speed = (Vector2){0, 0};
+
+    c_jet->numAliveProjectile = c_jet->numAliveProjectile - 1;
 }
 
 void virare(CompleteJet *c_jet, Triangolo* triangolo, int verso){

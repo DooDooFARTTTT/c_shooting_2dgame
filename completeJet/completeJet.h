@@ -32,6 +32,7 @@ typedef struct CompleteJet{
 
 CompleteJet builCompleteJet(Jet jet, Triangolo triangolo, int offsetX, int offsetY);
 void sparaProiettile(CompleteJet *c_jet);
+void deallocateBullet(CompleteJet* c_jet, Proiettile *proiettile);
 void virare(CompleteJet *c_jet, Triangolo *t, int verso);
 void ricarica(CompleteJet *c_jet);
 void accellera(CompleteJet *c_jet);

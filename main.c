@@ -100,6 +100,7 @@ static inline double conversioneInRadianti(double degree){
 char checkIfIsOutOfScreen(Vector2 position){
     if(position.x < 0 || position.x > SCREEN_WIDTH || position.y < 0 || position.y > SCREEN_HEIGHT)
         return OUT_OF_SCREEN;
+
     return 0;
 }
 
@@ -265,6 +266,9 @@ int main(){
                         updateBulletPos(&player1->completeJet.proiettiliInCampo[i]);
                         disegnaProiettile(&player1->completeJet.proiettiliInCampo[i]);
 
+                        if(checkIfIsOutOfScreen(player1->completeJet.proiettiliInCampo[i].position) == OUT_OF_SCREEN){
+                            deallocateBullet(&player1->completeJet, &player1->completeJet.proiettiliInCampo[i]);
+                        }
                     }
                 }
             }
